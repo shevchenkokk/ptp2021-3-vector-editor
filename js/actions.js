@@ -33,6 +33,40 @@ document.addEventListener('keydown', function(event) {
     }
 });*/
 
+//CREATE
+create = document.getElementById("create"); 
+
+function deleteChild(node, parent) {
+    for (var i = 0; i < node.childNodes.length;)
+        deleteChild(node.childNodes[i], node);
+
+    if (node.childNodes.length == 0) {
+        parent.removeChild(node);
+        return;
+    }
+}
+
+function deleteAllChildren(node) {
+    for (var i = 0; i < node.childNodes.length;)
+        deleteChild(node.childNodes[i], node);
+}
+
+create.onclick = function () { 
+    let width = prompt('Введите ширину нового холста в пикселях', 500);
+    let height = prompt('Введите высоту нового холста в пикселях', 500);
+
+    if (width < 1 || height < 1){
+        alert("Недопустимый размер холста!");
+        return;
+    }
+
+    deleteAllChildren(svgPanel);
+
+    svgPanel.setAttribute('width', width); 
+    svgPanel.setAttribute('height', height); 
+    svgPanel.setAttribute('viewBox', '0 0 ' + String(width) + ' ' + String(height));
+}
+
 //SAVE
 save = document.getElementById("save");
 
@@ -40,7 +74,7 @@ save.onclick = function () {
     let svgData = main_panel.innerHTML.toString();
     let fileName = prompt('Введите имя файла без расширения:');
     if (fileName == null)
-    return;
+        return;
     let blob = new Blob([svgData], {type: "image/svg+xml;charset=utf-8"});
     let url = window.URL.createObjectURL(blob);
 
@@ -60,7 +94,7 @@ savePng.onclick = function () {
     let svgData = main_panel.innerHTML.toString();
     let fileName = prompt('Введите имя файла без расширения:');
     if (fileName == null)
-    return;
+        return;
     let blob = new Blob([svgData], {type: "image/svg+xml;charset=utf-8"});
     let url = window.URL.createObjectURL(blob);
 
